@@ -12,19 +12,25 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-const databaseUrl = "Workouts";
-const collections = ["daily"];
+// const databaseUrl = "Workout";
+// const collections = ["workouts"];
 
-const db = mongojs(databaseUrl, collections);
+// const db = mongojs(databaseUrl, collections);
+let mongoose = require("mongoose");
+let db = require("./models");
 
-db.on("error", error => {
-  console.log("Database Error:", error);
+mongoose.connect("mongodb://localhost/workout", {
+  useNewUrlParser: true,
+  useFindAndModify: false
 });
 
-  
-require("./public/routes/api")(app);
-require("./public/routes/html")(app);
+// db.on("error", error => {
+//   console.log("Database Error:", error);
+// });
 
+  
+require("./public/routes/html")(app);
+require("./public/routes/api")(app);
   
 app.listen(3000, () => {
   console.log("App running on port 3000!");

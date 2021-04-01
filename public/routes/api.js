@@ -1,17 +1,21 @@
 
+const db = require('../../models');
+console.log('DB',db)
 module.exports = function(app){ 
     app.get("/api/workouts", (req, res) => {
-        db.notes.find({}, (error, data) => {
+        db.Workout.find({}, (error, data) => {
+            console.log('data',data);
             if (error) {
             res.send(error);
             } else {
+            console.log('data',data);
             res.json(data);
             }
         });
     });
     
     app.get("/api/workout/:id", (req, res) => {
-        db.notes.findOne(
+        db.Workout.findOne(
             {
             _id: mongojs.ObjectId(req.params.id)
             },
@@ -26,9 +30,9 @@ module.exports = function(app){
     });
     
     app.post("/api/workouts", (req, res) => {
-        db.notes.update(
+        db.Workout.update(
             {
-            _id: mongojs.ObjectId(req.params.id)
+            _id: req.params.id
             },
             {
             $set: {
@@ -48,10 +52,8 @@ module.exports = function(app){
     });
     
     app.put("/api/workouts/:id", (req, res) => {
-        db.notes.insert(
-            {
-            _id: mongojs.ObjectID(req.params.id)
-            },
+        db.Workout.insert(
+            req.body,
             (error, data) => {
             if (error) {
                 res.send(error);
