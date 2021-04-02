@@ -30,7 +30,9 @@ node seeds.js
 
 # Links
 ## Heroku Deployement
+- [Deployement](https://workouttrackerunc.herokuapp.com/)
 ## Github Repo
+- [repo folder](https://github.com/nhounhou/WorkoutTracker)
 
 # Screen Shot
 ![video](./public/images/quickVideo.gif)
