@@ -38,42 +38,25 @@ module.exports = function(app){
     });
     
     app.post("/api/workouts", (req, res) => {
-        const result = db.Workout.create(
-            // { 
-            // _id: mongojs.ObjectId(req.params.id)
-            // },
-            // {
-            // $set: {
-            //     title: req.body.title,
-            //     note: req.body.note,
-            //     modified: Date.now()
-            // }
-            // },
-            // (error, data) => {
-            // if (error) {
-            //     res.send(error);
-            // } else {
-            //     res.send(data);
-            // }
-            // }
-            req.body
-        );
-        res.json(result);
+        const result = db.Workout.create({}, (error,data) => {
+            if (error) {
+                res.send(error)
+            } else {
+                res.json(data)
+            }
+        });
     });
     
     app.put("/api/workouts/:id", (req, res) => {
         console.log('id',req.params.id)
-        db.Workout.updateOneinsert(
-            {
-            _id: req.params.id
-            },
-            (error, data) => {
-            if (error) {
-                res.send(error);
-            } else {
-                res.send(data);
-            }
-            }
-        );
+        db.Workout.findByIdAndUpdate(  
+            req.params.id,
+            {$push:{exercises: req.body} },
+            {new: true,runValidators:true }
+           )
+           .then(data => res.json(data))
+           .catch(err => { 
+               res.json(err)
+           })
     });    
 };
