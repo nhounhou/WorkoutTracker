@@ -1,14 +1,22 @@
+const db = require("../../models")
+const mongojs = require('mongojs')
 
-const db = require('../../models');
-console.log('DB',db)
 module.exports = function(app){ 
     app.get("/api/workouts", (req, res) => {
         db.Workout.find({}, (error, data) => {
-            console.log('data',data);
             if (error) {
             res.send(error);
             } else {
-            console.log('data',data);
+            res.json(data);
+            }
+        });
+    });
+
+    app.get("/api/workouts/range", (req, res) => {
+        db.Workout.find({}, (error, data) => {
+            if (error) {
+            res.send(error);
+            } else {
             res.json(data);
             }
         });
@@ -30,30 +38,35 @@ module.exports = function(app){
     });
     
     app.post("/api/workouts", (req, res) => {
-        db.Workout.update(
-            {
-            _id: req.params.id
-            },
-            {
-            $set: {
-                title: req.body.title,
-                note: req.body.note,
-                modified: Date.now()
-            }
-            },
-            (error, data) => {
-            if (error) {
-                res.send(error);
-            } else {
-                res.send(data);
-            }
-            }
+        const result = db.Workout.create(
+            // { 
+            // _id: mongojs.ObjectId(req.params.id)
+            // },
+            // {
+            // $set: {
+            //     title: req.body.title,
+            //     note: req.body.note,
+            //     modified: Date.now()
+            // }
+            // },
+            // (error, data) => {
+            // if (error) {
+            //     res.send(error);
+            // } else {
+            //     res.send(data);
+            // }
+            // }
+            req.body
         );
+        res.json(result);
     });
     
     app.put("/api/workouts/:id", (req, res) => {
-        db.Workout.insert(
-            req.body,
+        console.log('id',req.params.id)
+        db.Workout.updateOneinsert(
+            {
+            _id: req.params.id
+            },
             (error, data) => {
             if (error) {
                 res.send(error);
