@@ -7,22 +7,8 @@ const workoutSchema = new Schema({
     type: Date,
     default: new Date().setDate(new Date().getDate())
   },
-  exercises: Array},
-  {
-    toJSON: {
-      // include any virtual properties when data is requested
-      virtuals: true
-    }
-  }
-);
-
-workoutSchema.virtual("totalDuration").get(function () {
-  const duration = this.exercises.reduce((acc, cur) => {
-    return acc + cur.duration;
-  }, 0);
-
-  return duration;
+  exercises: Array
 });
-  
-const Workout = mongoose.model('Workouts', workoutSchema);
+
+const Workout = mongoose.model('Workout', workoutSchema);
 module.exports = Workout;
